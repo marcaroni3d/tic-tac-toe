@@ -2,4 +2,4 @@
 
 A playable game of Tic Tac Toe using javascript.
 
-[Live Demo](https://marcaroni3d.github.io/rock-paper-scissors/)
+[Live Demo](https://marcaroni3d.github.io/tic-tac-toe/)
