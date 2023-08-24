@@ -36,7 +36,7 @@ const displayController = (() => {
     gameCells.forEach(cell => 
         cell.addEventListener('click', (e) => {
             if (gameController.getIsOver() || e.target.textContent !== '') return
-            gameController.playRound(e.target.dataset.index)
+            gameController.playRound(parseInt(e.target.dataset.index))
             updateGameboard()
         }))
 
@@ -101,6 +101,14 @@ const gameController = (() => {
             [0, 4, 8],
             [2, 4, 6],
         ]
+
+        return winConditions
+            .filter(combination => combination.includes(index))
+            .some(possibleCombination => 
+                possibleCombination.every(
+                    i => Gameboard.getField(i) === getCurrentPlayerSign()
+                )
+            )
     }
 
     const getIsOver = () => {
