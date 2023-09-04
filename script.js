@@ -1,3 +1,12 @@
+// To Do:
+// Selection onclick => change icon, set game mode, keep button active
+    // function to get random computer choice
+    // create game modes
+// start game onclick => hide modal
+// display roundCount
+
+// MAIN GAME FUNCTIONALITY
+
 const Player = (sign) => {
     this.sign = sign
 
@@ -29,9 +38,37 @@ const Gameboard = (() => {
 })();
 
 const displayController = (() => {
-    const gameCells = document.querySelectorAll('.game-cell')
+    const gameSetupModal = document.getElementById('game-setup-modal')
+    const startGameButton = document.getElementById('start-game-button')
     const mainText = document.getElementById('main-text')
-    const restartButton = document.getElementById('restart-button')
+    const gameCells = document.querySelectorAll('.game-cell')
+    const xScoreDisplay = document.getElementById('x-score-display')
+    const oScoreDisplay = document.getElementById('o-score-display')
+    const roundDisplay = document.getElementById('round-display')
+    const newMatchButton = document.getElementById('new-match-button')
+    const newGameButton = document.getElementById('new-game-button')
+
+    startGameButton.addEventListener('click', () => {
+        gameSetupModal.style.visibility = 'hidden'
+    })
+
+    newMatchButton.onclick = () => {
+        statsController.addRoundCount()
+        resetGame()
+    }
+
+    newGameButton.onclick = () => {
+        gameSetupModal.style.visibility = 'visible'
+        statsController.clear()
+        resetGame()
+    }
+    
+    const resetGame = () => {
+        Gameboard.reset()
+        gameController.reset()
+        updateGameboard()
+        setMainText("Player X's turn")
+    }
 
     gameCells.forEach(cell => 
         cell.addEventListener('click', (e) => {
@@ -39,13 +76,6 @@ const displayController = (() => {
             gameController.playRound(parseInt(e.target.dataset.index))
             updateGameboard()
         }))
-
-    restartButton.onclick = (e) => {
-        Gameboard.reset()
-        gameController.reset()
-        updateGameboard()
-        setMainText("Player X's turn")
-    }
 
     const updateGameboard = () => {
         for (let i = 0; i < gameCells.length; i++) {
@@ -61,7 +91,47 @@ const displayController = (() => {
         mainText.textContent = message
     }
 
-    return { setResultMessage, setMainText }
+    const updateStats = (xScore, oScore, roundCount) => {
+        xScoreDisplay.innerText = xScore
+        oScoreDisplay.innerText = oScore
+        roundDisplay.innerText = roundCount
+    }
+
+    return { setResultMessage, setMainText, updateStats }
+})();
+
+const statsController = (() => {
+    let xScore = 0
+    let oScore = 0
+    let roundCount = 1
+
+    const addXScore = () => {
+        xScore++
+        updateStats()
+    }
+
+    const addOScore = () => {
+        oScore++
+        updateStats()
+    }
+
+    const addRoundCount = () => {
+        roundCount++
+        updateStats()
+    }
+
+    const updateStats = () => {
+        displayController.updateStats(xScore, oScore, roundCount)
+    }
+
+    const clear = () => {
+        xScore = 0
+        oScore = 0
+        roundCount = 1
+        updateStats()
+    }
+
+    return { addXScore, addOScore, addRoundCount, clear}
 })();
 
 const gameController = (() => {
@@ -74,6 +144,12 @@ const gameController = (() => {
         Gameboard.setField(index, getCurrentPlayerSign())
         if (checkWinner(index)) {
             displayController.setResultMessage(getCurrentPlayerSign())
+            if (getCurrentPlayerSign() === 'X') {
+                statsController.addXScore()
+            } 
+            if (getCurrentPlayerSign() === 'O') {
+                statsController.addOScore()
+            }
             isOver = true
             return
         }
@@ -125,3 +201,4 @@ const gameController = (() => {
 
 // INIT
 displayController.setMainText("Player X's turn")
+displayController.updateStats(0, 0, 1)

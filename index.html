@@ -10,9 +10,9 @@
     <header>
         <h1>Tic Tac Toe</h1>
     </header>
+
     <div class="main-container">
         <div id="main-text"></div>
-        
         <div class="game-container">
             <div class="game-cell" data-index="0"></div>
             <div class="game-cell" data-index="1"></div>
@@ -24,8 +24,42 @@
             <div class="game-cell" data-index="7"></div>
             <div class="game-cell" data-index="8"></div>
         </div>
+        <div class="stats-container">
+            <h4>Player X's Score: <span id="x-score-display"></span></h4>
+            <h4>Player O's Score: <span id="o-score-display"></span></h4>
+            <h4>Round: <span id="round-display"></span></h4>
+        </div>
+        <div class="button-container">
+            <button id="new-match-button">New Match</button>
+            <button id="new-game-button">New Game</button>
+        </div>
+        
+    </div>
 
-        <button id="restart-button">Restart</button>
+    <div id="game-setup-modal">
+        <h1>Tic Tac Toe</h1>
+
+        <div id="setup-wrapper">
+            <div id="x-container" class="selection-container">
+                <h2>X</h2>
+                <img src="images/account.svg" alt="player">
+                <div class="selection-wrapper">
+                    <button>Player</button>
+                    <button>Bot</button>
+                </div>
+            </div>
+            <h2>VS</h2>
+            <div id="o-container" class="selection-container">
+                <h2>O</h2>
+                <img src="images/robot.svg" alt="bot">
+                <div class="selection-wrapper">
+                    <button>Player</button>
+                    <button>Bot</button>
+                </div>
+            </div>
+        </div>
+
+        <button id="start-game-button">Start Game</button>
     </div>
 
     <script src="script.js"></script>
