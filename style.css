@@ -16,9 +16,9 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    gap: 5rem;
+    gap: 2rem;
     padding: 2rem .5rem 2rem .5rem;
-    min-height: 100vh;
+    height: 100vh;
     background-color: var(--secondary-light);
     color: var(--primary-dark);
     font-size: 1.5rem;
@@ -33,7 +33,11 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 2rem;
+    gap: 1rem;
+}
+
+#main-text {
+    font-size: 135%;
 }
 
 .game-container {
@@ -73,7 +77,7 @@ h1 {
     margin: .5rem;
 }
 
-#new-match-button,
+#new-round-button,
 #new-game-button {
     font-size: 1rem;
     padding: .5rem;
@@ -82,7 +86,7 @@ h1 {
     border-radius: 5px;
     cursor: pointer;
 }
-#new-match-button:hover,
+#new-round-button:hover,
 #new-game-button:hover {
     background-color: var(--primary-dark);
     color: var(--primary-light);
@@ -131,8 +135,8 @@ h1 {
     border-radius: 5px;
     padding: 1rem;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
-    min-width: 100px;
-    min-height: 100px;
+    min-width: 200px;
+    min-height: 200px;
 }
 
 .selection-wrapper {
@@ -143,12 +147,18 @@ h1 {
     gap: 1rem;
 }
 
-.selection-wrapper > button {
+.selection-button {
     padding: 10px;
     border: 1px solid var(--primary-dark);
     border-radius: 5px;
     background-color: var(--primary-light);
     cursor: pointer;
+}
+
+.selection-button-active {
+    transform: scale(1.2);
+    background-color: var(--primary-dark);
+    color: var(--primary-light);
 }
 
 #start-game-button {
@@ -160,7 +170,7 @@ h1 {
     cursor: pointer;
 }
 
-.selection-wrapper > button:hover,
+.selection-button:hover,
 #start-game-button:hover {
     transform: scale(1.2);
     background-color: var(--primary-dark);
