@@ -64,8 +64,6 @@ const displayController = (() => {
     }
 
     newGameButton.onclick = () => {
-        gameSetupController.removeActiveSelections()
-        gameSetupController.showModal()
         statsController.clear()
         resetGame()
     }
@@ -100,109 +98,17 @@ const displayController = (() => {
     return { setResultMessage, setMainText, updateStats }
 })();
 
-
-// GAME SETUP MODAL
-const gameSetupController = (() => {
-    let xUserType = 'Player'
-    let oUserType = 'Bot'
-
-    const getXUserType = () => {
-        return xUserType
-    }
-    const getOUserType = () => {
-        return oUserType
-    }
-
-    const xButtons = document.querySelectorAll('.x-button')
-    const oButtons = document.querySelectorAll('.o-button')
-    const xPic = document.getElementById('x-pic')
-    const oPic = document.getElementById('o-pic')
-    const selectionButtons = document.querySelectorAll('.selection-button')
-    const startGameButton = document.getElementById('start-game-button')
-    const gameSetupModal = document.getElementById('game-setup-modal')
-
-    const showModal = () => {
-        gameSetupModal.style.visibility = 'visible'
-    }
-
-    const hideModal = () => {
-        gameSetupModal.style.visibility = 'hidden'
-    }
-    
-    selectionButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            const choice = e.target.innerText
-            const user = e.target.parentNode.parentNode.id
-
-            if (user === 'x-container') {
-                xButtons.forEach(btn => btn.classList.remove('selection-button-active'))
-                xUserType = choice
-                if (xUserType === 'Player') {
-                    xPic.src = 'images/account.svg'
-                }
-                if (xUserType === 'Bot') {
-                    xPic.src = 'images/robot.svg'
-                }
-            }
-            if (user === 'o-container') {
-                oButtons.forEach(btn => btn.classList.remove('selection-button-active'))
-                oUserType = choice
-                if (oUserType === 'Player') {
-                    oPic.src = 'images/account.svg'
-                }
-                if (oUserType === 'Bot') {
-                    oPic.src = 'images/robot.svg'
-                } 
-            }
-
-            button.classList.add('selection-button-active')
-        })
-    })
-
-    const removeActiveSelections = () => {
-        xButtons.forEach(button => {
-            button.classList.remove('selection-button-active')
-        })
-        oButtons.forEach(button => {
-            button.classList.remove('selection-button-active')
-        })
-    }
-
-    startGameButton.addEventListener('click', () => {
-        // check that selections are made for both x and o, or default, or give error and return
-        gameController.init()
-        hideModal()
-    })
-
-    return { getXUserType, getOUserType, showModal, hideModal, removeActiveSelections }
-})();
-
-
 // GAME CONTROLLER
 const gameController = (() => {
     const playerX = Player('X')
     const playerO = Player('O')
-    let currentTurn = 'X'
-    let playerXType
-    let playerOType
     let round = 1
     let isOver = false
 
-    // game init function to be fired on modal start game button click:
-    // grab x & o player types
-  
-    // trigger getComputerChoice if currentplayer is a bot
-
-    const init = () => {
-        playerXType = gameSetupController.getXUserType()
-        playerOType = gameSetupController.getOUserType()
-    }
-
     const playRound = (index) => {
-        if ((currentTurn === 'X' && playerXType === 'Player') || 
-            (currentTurn === 'O' && playerOType === 'Player')) {
-            Gameboard.setField(index, getCurrentPlayerSign())
-        }
+        
+        Gameboard.setField(index, getCurrentPlayerSign())
+
         if (checkWinner(index)) {
             displayController.setResultMessage(getCurrentPlayerSign())
             if (getCurrentPlayerSign() === 'X') {
@@ -257,20 +163,8 @@ const gameController = (() => {
         isOver = false
     }
 
-    return { init, playRound, getIsOver, reset }
+    return { playRound, getIsOver, reset }
 })();
-
-// BOTS
-// const bots = (() => {
-//     const possibleMoves = [];
-//     Gameboard.board.filter((el, i) => {
-//         if(el === null) {
-//             possibleMoves.push(i)
-//         }
-//     })
-//     const randNum = Math.floor(Math.random() * 9)
-//     playRound(randNum)
-// })();
 
 const statsController = (() => {
     let xScore = 0
